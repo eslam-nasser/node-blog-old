@@ -1,0 +1,8 @@
+{
+  "name": "Node.js Blog",
+  "description": "A Node.js Blog",
+  "repository": "https://github.com/Eslam-nasser-wd/node-blog",
+  "logo": "http://node-js-sample.herokuapp.com/node.svg",
+  "keywords": ["node", "express", "mongo"],
+  "image": "heroku/nodejs"
+}
