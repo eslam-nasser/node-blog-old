@@ -1,0 +1,87 @@
+<% include assets/header %>
+
+
+	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">			
+		<div class="row">
+			<ol class="breadcrumb">
+				<li><a href="#"><span class="glyphicon glyphicon-home"></span></a></li>
+				<li class="active">Tables</li>
+			</ol>
+		</div><!--/.row-->
+		
+		<div class="row">
+			<div class="col-lg-12">
+				<h1 class="page-header">Tables</h1>
+			</div>
+		</div><!--/.row-->
+				
+		
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="panel panel-default">
+					<div class="panel-heading">Advanced Table</div>
+					<div class="panel-body">
+						<table id="users-table" data-toggle="table" data-show-refresh="false" data-show-toggle="false" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
+						    <thead>
+						    <tr>
+						        <th data-field="id" data-sortable="true">#</th>
+						        <th data-field="name"  data-sortable="true">Name</th>
+						        <th data-field="role"  data-sortable="true">Role</th>
+						        <th data-field="action" data-sortable="true" class="text-center">Action</th>
+						    </tr>
+						    </thead>
+							<tbody>
+								<% 
+								for(var i=0; i < users.length; i++) {
+									var whatRole;
+									if( users[i].admin == true) {
+										whatRole = 'Admin'
+									} else{ whatRole = 'Writer' } %>
+									
+								<tr data-index="<%= i %>">
+									<td style=""><%= i %></td>
+									<td style=""><%= users[i].name %></td>
+									<td style=""><%= whatRole %></td>
+									<td style="text-align: center">
+										<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal<%= i %>">
+											<i class="glyphicon glyphicon-trash"></i>
+										</button>
+										<a href="#" class="btn btn-warning"><i class="glyphicon glyphicon-pencil"></i></a>
+									</td>
+								</tr>
+								<% } %>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div><!--/.row-->	
+		
+	</div><!--/.main-->
+
+<% 
+	for(var i=0; i < users.length; i++) { 
+%>
+<div class="modal fade" id="myModal<%= i %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Delete User</h4>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to <b>DELETE</b> this user
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+		<form action="all-admins/<%= users[i]._id %>?_method=DELETE" method="POST" style="display: inline">
+			<input type="hidden" value="<%= users[i]._id %>" name="deleteThisPostId">
+			<button type="submit" class="btn btn-danger">Delete</button>
+		</form>
+      </div>
+    </div>
+  </div>
+</div>
+<% } %>
+
+<% include assets/footer %>

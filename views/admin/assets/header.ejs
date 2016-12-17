@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard</title>
+
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/datepicker3.css" rel="stylesheet">
+<link href="css/styles.css" rel="stylesheet">
+<link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,100italic,300italic,400italic,700italic,900italic' rel='stylesheet' type='text/css'>
+<!--Icons-->
+<script src="js/lumino.glyphs.js"></script>
+
+<!--[if lt IE 9]>
+<script src="js/html5shiv.js"></script>
+<script src="js/respond.min.js"></script>
+<![endif]-->
+
+</head>
+
+<body>
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sidebar-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="/" target="_blanck"><span>Blog</span> with node</a>
+			</div>
+		</div><!-- /.container-fluid -->
+	</nav>
+		
+	<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+		<div class="profile-preview">
+			<div class="avatar-image">
+				<img src="<%= siteUrl +'/'+session.image %>" alt="Name">
+			</div>
+			<div class="user-name">
+				<h3><%= session.name %></h3>
+				<%
+				var whatRole;
+				if(session.name) {
+					whatRole = 'Admin'
+				}else {whatRole = 'Writer'} %>
+				<p><%= whatRole %></p>
+			</div>
+		</div>
+		<ul class="nav menu">
+			<li class=""><a href="/admin/dashboard"><span class="glyphicon glyphicon-dashboard"></span> Dashboard</a></li>
+			<li class="parent">
+				<a href="#">
+					<span class="glyphicon glyphicon-th-list"></span> Posts <span data-toggle="collapse" href="#sub-item-1" class="icon pull-right"><em class="glyphicon glyphicon-s glyphicon-plus"></em></span> 
+				</a>
+				<ul class="children collapse" id="sub-item-1">
+					<li>
+						<a href="all-posts">
+							<span class="glyphicon glyphicon-list"></span> All posts
+						</a>
+					</li>
+					<li>
+						<a href="add-post">
+							<span class="glyphicon glyphicon-pencil"></span> Add post
+						</a>
+					</li>
+				</ul>
+			</li>
+			<li class="parent">
+				<a href="#">
+					<span class="glyphicon glyphicon-lock"></span> Admins <span data-toggle="collapse" href="#sub-item-1" class="icon pull-right"><em class="glyphicon glyphicon-s glyphicon-plus"></em></span> 
+				</a>
+				<ul class="children collapse" id="sub-item-1">
+					<li>
+						<a href="all-admins">
+							<span class="glyphicon glyphicon-list"></span> All Admins
+						</a>
+					</li>
+					<li>
+						<a href="add-admin">
+							<span class="glyphicon glyphicon-plus"></span> Add Admin
+						</a>
+					</li>
+				</ul>
+			</li>
+			<li role="presentation" class="divider"></li>
+			<li><a href="logout"><span class="glyphicon glyphicon-user"></span> Logout</a></li>
+		</ul>
+	</div><!--/.sidebar-->
+		
+
+		

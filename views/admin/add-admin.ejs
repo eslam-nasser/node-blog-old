@@ -1,0 +1,72 @@
+<% include assets/header %>
+
+
+	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">			
+		<div class="row">
+			<ol class="breadcrumb">
+				<li><a href="#"><span class="glyphicon glyphicon-home"></span></a></li>
+				<li class="active">Add admin</li>
+			</ol>
+		</div><!--/.row-->
+		
+		<div class="row">
+			<div class="col-lg-12">
+				<h1 class="page-header">Add admin</h1>
+			</div>
+		</div><!--/.row-->
+				
+		
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="panel panel-default">
+					<div class="panel-heading">Add admin</div>
+					<div class="panel-body">
+						<div class="col-md-10">
+							<form role="form" action="add-admin" method="post" enctype="multipart/form-data">
+							
+								<div class="form-group">
+									<label style="margin-bottom:0">New admin name</label>
+									<p class="help-block" style="padding-top:0;margin-top:0">This name will be used as the post wrtiter</p>
+									<input class="form-control" name="newUsername" placeholder="New Username" type="text" autofocus required>
+								</div>
+								<div class="form-group">
+									<label>New admin password</label>
+									<input class="form-control" name="newPassword" placeholder="New Password" type="text" required>
+								</div>
+								<div class="form-group">
+									<label>New admin email</label>
+									<input class="form-control" name="newEmail" placeholder="New Email" type="text" required>
+								</div>
+								<div class="form-group">
+									<label>New admin role</label>
+									<select name="newRole" class="form-control" required>
+										<option value="amdin" selected>Super Admin</option>
+										<option value="writer">Writer</option>
+									</select>
+								</div>
+								<div class="form-group">
+									<label>New admin profile image</label>
+									<input name="newAvatar" type="file" id="imgInp" required>
+									<p class="help-block">Please upload a square image, 200x200 for example.</p>
+									<div class="image-wrapper">
+										<img id="imagePreview" src="#" alt="">
+										<span>X</span>
+									</div>
+								</div>
+								
+							</div>
+							<div class="col-md-2">
+								<button type="submit" class="btn btn-block btn-primary">Submit Button</button>
+								<button type="reset" class="btn btn-block btn-default">Reset Button</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div><!-- /.col-->
+		</div><!-- /.row -->
+		
+	</div><!--/.main-->
+
+
+
+<% include assets/footer %>
