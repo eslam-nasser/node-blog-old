@@ -1,0 +1,61 @@
+<% include assets/header %>
+
+
+	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">			
+		<div class="row">
+			<ol class="breadcrumb">
+				<li><a href="#"><span class="glyphicon glyphicon-home"></span></a></li>
+				<li class="active">General</li>
+			</ol>
+		</div><!--/.row-->
+		
+		<div class="row">
+			<div class="col-lg-12">
+				<h1 class="page-header">About Settings</h1>
+			</div>
+		</div><!--/.row-->
+				
+		
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="panel panel-default">
+					<div class="panel-heading">Settings</div>
+					<div class="panel-body">
+						<div class="col-md-10">
+							<form role="form" action="about" method="post" enctype="multipart/form-data">
+							
+								<!-- Owner Info -->
+								<div class="form-group">
+									<label>Owner Name</label>
+									<input class="form-control" name="OwnerName" type="text" autofocus required>
+								</div>
+								<div class="form-group">
+									<label>Owner Bio</label>
+									<textarea class="form-control" name="ownerBio" rows="6" required></textarea>
+								</div>
+								<div class="form-group">
+									<label>Personal Image</label>
+									<p>Recommended size is: 300x300</p>
+									<input name="ownerImage" type="file" required id="imgInp">
+									<div class="image-wrapper">
+										<img id="imagePreview" src="#" alt="">
+										<span>X</span>
+									</div>
+								</div>
+								
+							</div>
+							<div class="col-md-2">
+								<button type="submit" class="btn btn-block btn-primary">Submit Button</button>
+								<button type="reset" class="btn btn-block btn-default">Reset Button</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div><!-- /.col-->
+		</div><!-- /.row -->
+		
+	</div><!--/.main-->
+
+
+
+<% include assets/footer %>

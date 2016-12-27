@@ -6,6 +6,7 @@ var Schema = mongoose.Schema;
 module.exports = mongoose.model('Post', new Schema({ 
     title: String,
     content: String,
+    short_description: String,
     by: String, 
     date: { type: Date, default: Date.now },
     imageUrl: Object

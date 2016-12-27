@@ -1227,7 +1227,7 @@ tr:hover {
 	height: 100%;
 }
 .profile-preview .user-name h3{
-	margin-top: 0;
+	margin-top: 5px;
 	margin-bottom: 5px;
 	text-transform: uppercase
 }
@@ -1238,3 +1238,101 @@ tr:hover {
 }
 
 
+.fixed-table-toolbar > div{
+	margin: 10px 10px 10px 0;
+}
+.fixed-table-toolbar .dropdown-menu{
+	left: auto;
+	right: 0;
+	padding: 10px;
+	color: #333
+}
+.fixed-table-toolbar .dropdown-menu li{
+	padding: 5px;
+	border-bottom: 1px solid #EEE;
+	transition: .1s
+}
+.fixed-table-toolbar .dropdown-menu li:hover{
+	background: #eee;
+}
+.fixed-table-toolbar .dropdown-menu li label{cursor: pointer}
+.fixed-table-pagination .btn-group.dropup{
+	display: inline-block;
+	margin: auto 10px
+}
+.pagination>.disabled>span, .pagination>.disabled>span:hover, .pagination>.disabled>span:focus, .pagination>.disabled>a, .pagination>.disabled>a:hover, .pagination>.disabled>a:focus
+{
+	background: #34414a;
+	color: #DDD;
+	border-color: rgba(238, 238, 238, 0.25)
+}
+.table-hover>tbody>tr:hover>td, .table-hover>tbody>tr:hover>th{
+	background-color: rgba(245, 245, 245, 0.16)
+}
+tr:hover{color: #FFF}
+
+
+.modal-footer .btn-default{
+	border: 1px solid #c7c7c7;
+	color: #333;
+}
+
+
+
+.profile .left-side img{
+	height: 130px;
+	width: 130px;
+	display: block;
+	margin: 10px auto;
+	border-radius: 100%;
+	border: 1px solid #eee;
+	padding: 2px
+}
+.profile .left-side h2{
+	text-transform: uppercase
+}
+
+.profile .right-side {
+	border-left: 1px solid rgba(238, 238, 238, 0.35);
+	min-height: 400px
+}
+.profile .right-side div{
+	padding-left: 0
+}
+.profile .right-side a{text-decoration: underline; color: #EEE}
+.profile .right-side .single-detail{
+	padding: 15px 0;
+	border-bottom: 1px solid rgba(238, 238, 238, 0.35)
+}
+.profile .right-side .single-detail:last-of-type{
+	border-bottom: 0
+}
+
+
+.form-group > .row{
+	margin-right: -15px;
+	margin-left: -15px;
+}
+
+textarea{
+	width: 100%;
+	resize: none
+}
+.panel-default .panel-heading{display: none;}
+.hr{
+	border-bottom: 1px solid #EEE;
+	padding: 5px;
+	margin-top: 70px;
+	margin-bottom: 10px;
+	text-transform: uppercase
+}
+
+.hr:first-of-type{margin-top: 0;}
+
+input[disabled]{
+	border: 1px solid rgba(255, 255, 255, .1);
+	box-shadow: none;
+	background-color: rgba(255, 255, 255, .1) !important;
+	color: #fff;
+	outline: 0;
+}

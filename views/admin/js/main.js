@@ -2,8 +2,8 @@ function readURL(input) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
         reader.onload = function (e) {
-        $('.image-wrapper').css('display', 'inline-block');
-        $('#imagePreview').attr('src', e.target.result);
+            $('.image-wrapper').css('display', 'inline-block');
+            $('#imagePreview').attr('src', e.target.result);
         }
         reader.readAsDataURL(input.files[0]);
     }

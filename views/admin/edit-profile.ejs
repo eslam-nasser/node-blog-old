@@ -1,0 +1,86 @@
+<% include assets/header %>
+
+
+	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">			
+		<div class="row">
+			<ol class="breadcrumb">
+				<li><a href="#"><span class="glyphicon glyphicon-home"></span></a></li>
+				<li class="active">Edit profile</li>
+			</ol>
+		</div><!--/.row-->
+		
+		<div class="row">
+			<div class="col-lg-12">
+				<h1 class="page-header">Edit profile</h1>
+			</div>
+		</div><!--/.row-->
+				
+		
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="panel panel-default">
+					<div class="panel-heading">Edit</div>
+					<div class="panel-body">
+						<div class="col-md-10">
+							<form role="form" action="edit-profile?userId=<%= user._id %>&_method=PUT" method="post" enctype="multipart/form-data">
+								<div class="form-group">
+									<label style="margin-bottom:0">Edit admin name</label>
+									<p class="help-block" style="padding-top:0;margin-top:0">This name will be used as the post wrtiter</p>
+									<input class="form-control" name="editUsername" placeholder="edit Username" type="text" autofocus required value="<%= user.name %>">
+								</div>
+								<div class="form-group">
+									<label>Edit admin password</label>
+									<div class="row">
+										<div class="col-xs-6">
+											<input class="form-control" placeholder="New Password" type="text" id="newPasswordStep1" onfocus="disabledButton()">
+										</div>
+										<div class="col-xs-6">
+											<input class="form-control" name="editPassword" placeholder="Confirm Password" type="text" id="newPasswordStep2" onkeyup="testPasswords()">
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label>Edit admin email</label>
+									<input class="form-control" name="editEmail" placeholder="edit Email" type="text" required value="<%= user.email %>">
+								</div>
+								
+								<div class="form-group">
+									<label>Edit admin profile image</label>
+									<input name="editAvatar" type="file" id="imgInp" required>
+									<p class="help-block">Please upload a square image, 200x200 for example.</p>
+									<div class="image-wrapper">
+										<img id="imagePreview" src="<%= siteUrl +'/'+ user.avatarUrl.filename %>" alt="">
+										<span>X</span>
+									</div>
+								</div>
+								
+							</div>
+							<div class="col-md-2">
+								<button type="submit" class="btn btn-block btn-primary">Submit Button</button>
+								<button type="reset" class="btn btn-block btn-default">Reset Button</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div><!-- /.col-->
+		</div><!-- /.row -->
+		
+	</div><!--/.main-->
+
+
+
+<% include assets/footer %>
+<script>
+	function disabledButton(){
+		$('button[type="submit"]').attr('disabled', true)
+	}
+	function testPasswords(){
+		var input1 = $('#newPasswordStep1').val(),
+			input2 = $('#newPasswordStep2').val();
+		if(input1 === input2){
+			$('button[type="submit"]').attr('disabled', false)
+		}else{
+			$('button[type="submit"]').attr('disabled', true)
+		}
+	}
+</script>

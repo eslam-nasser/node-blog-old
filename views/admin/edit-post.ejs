@@ -5,13 +5,13 @@
 		<div class="row">
 			<ol class="breadcrumb">
 				<li><a href="#"><span class="glyphicon glyphicon-home"></span></a></li>
-				<li class="active">Forms</li>
+				<li class="active">Edit Post</li>
 			</ol>
 		</div><!--/.row-->
 		
 		<div class="row">
 			<div class="col-lg-12">
-				<h1 class="page-header">Forms</h1>
+				<h1 class="page-header">Edit Post</h1>
 			</div>
 		</div><!--/.row-->
 				
@@ -19,9 +19,9 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="panel panel-default">
-					<div class="panel-heading">Form Elements</div>
+					<div class="panel-heading">Edit</div>
 					<div class="panel-body">
-						<div class="col-md-9">
+						<div class="col-md-10">
 							<form action="edit-post?postId=<%= postId %>&_method=PUT" method="post" enctype="multipart/form-data">
 							
 								<div class="form-group">
@@ -32,6 +32,11 @@
 								<div class="form-group">
 									<label>Post Writer</label>
 									<p>The post writer will automatically set to: <span class="upper-case"><b><i><%= session.name %><i></b></span></p>
+								</div>
+
+								<div class="form-group">
+									<label>Post short desciption</label>
+									<textarea class="form-control" name="short_description" rows="5" maxlength="120"></textarea>
 								</div>
 								
 								<div class="form-group">
@@ -54,9 +59,9 @@
 								</div>
 								
 							</div>
-							<div class="col-md-3">
-								<button type="submit" class="btn btn-primary">Submit Button</button>
-								<button type="reset" class="btn btn-default">Reset Button</button>
+							<div class="col-md-2">
+								<button type="submit" class="btn btn-block btn-primary">Submit Button</button>
+								<button type="reset" class="btn btn-block btn-default">Reset Button</button>
 							</div>
 						</form>
 					</div>

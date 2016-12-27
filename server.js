@@ -16,10 +16,11 @@ var methodOverride  = require('method-override');
 var fs              = require('fs')
 var url             = require('url')
 
-var jwt             = require('jsonwebtoken'); // used to create, sign, and verify tokens
+// var flash           = require('express-flash')
 var config          = require('./config'); // get our config file
-var User            = require('./models/User'); // get our mongoose model
-var Post            = require('./models/Post'); // get our mongoose model
+var User            = require('./models/User'); // get mongoose model
+var Post            = require('./models/Post'); // get mongoose model
+var General         = require('./models/General'); // get mongoose model
 
 app.locals.visitorsCounter = 0;
 app.locals.siteUrl = 'http://localhost:8080';
@@ -54,7 +55,6 @@ var storage = multer.diskStorage({
   filename: function (req, file, cb) {
     crypto.randomBytes(16, function (err, raw) {
       if (err) return cb(err)
-
       cb(null, raw.toString('hex') + path.extname(file.originalname))
     })
   }
@@ -77,7 +77,9 @@ app.use(morgan('dev'));
 
 // CLIENT ROUTES
 app.get('/', function(req, res) {
-    res.render('index'); 
+    Post.find({}, function(err, posts) {
+      res.render('index', {posts: posts})
+    });
     app.locals.visitorsCounter++
 });
 app.get('/about', function(req, res) {
@@ -92,13 +94,29 @@ app.get('/single', function(req, res) {
     res.render('single');
     app.locals.visitorsCounter++
 });
-
+app.get('/api', function (req, res) { 
+  Post.find({}, function(err, posts) {
+    res.json(posts)
+  });
+})
 // ADMIN ROUTES
 var adminRoutes = express.Router(); 
 
 // login
 adminRoutes.get('/', function (req, res) { 
+  if(req.session.name){
+    Post.find({}, function(err, posts) {
+      User.find({}, function(err, users) {
+        res.render('admin/dashboard', {
+          session: req.session,
+          posts: posts,
+          users: users
+        })
+      });
+    });
+  }else{
     res.render('admin/login')
+  }
 })
 adminRoutes.post('/', function (req, res) {
     var inputUsername = req.body.inputUsername,
@@ -114,18 +132,11 @@ adminRoutes.post('/', function (req, res) {
       if (!passwordHash.verify(req.body.inputPassword, user.password)) {
         res.json({ success: false, message: 'Authentication failed. Wrong password.' });
       } else {
-        var token = jwt.sign(user, app.get('superSecret'), {
-          expiresIn: '24h' // expires in 24 hours
-        });
-        // res.json({
-        //   success: true,
-        //   message: 'Logged In!',
-        //   token: token
-        // });
         req.session.name = inputUsername;
         req.session.role = user.admin;
         req.session.image = user.avatarUrl.filename;
-        console.log(user)
+        req.session.userId = user._id
+        // console.log(user)
         res.redirect('admin/dashboard');
       }   
     }
@@ -134,11 +145,8 @@ adminRoutes.post('/', function (req, res) {
 
 // dashboard
 adminRoutes.get('/dashboard', isAuthenticated, function (req, res) {
-    // var allPosts, allUsers;
     Post.find({}, function(err, posts) {
-      // allPosts = posts;
       User.find({}, function(err, users) {
-        // allUsers = users
         res.render('admin/dashboard', {
           session: req.session,
           posts: posts,
@@ -146,7 +154,7 @@ adminRoutes.get('/dashboard', isAuthenticated, function (req, res) {
         })
       });
     });    
-    // console.log(`\n=========================\n `, req.session, ` \n=========================\n`)
+    console.log(`\n=========================\n `, req.session, ` \n=========================\n`)
 })
 
 // posts
@@ -160,6 +168,7 @@ adminRoutes.post('/add-post', upload.single('postImage'), function (req, res) {
   var newPost = new Post({ 
       title: req.body.postTitle,
       content: req.body.postContent,
+      short_description: req.body.short_description,
       by: req.session.name,
       date: new Date(),
       imageUrl: req.file
@@ -169,7 +178,10 @@ adminRoutes.post('/add-post', upload.single('postImage'), function (req, res) {
   newPost.save(function(err) {
       if (err) throw err;
       console.log('Post saved successfully');
-      res.render('admin/add-post', {session: req.session})
+      // Post.find({}, function(err, posts) {
+      //   res.render('admin/all-posts', {posts: posts, session: req.session})
+      // });
+      res.redirect('all-posts')
   });
 })
 adminRoutes.get('/edit-post', isAuthenticated, function (req, res) { 
@@ -207,10 +219,12 @@ adminRoutes.put('/edit-post', upload.single('postImage'), isAuthenticated, funct
             newEditedPost.imageUrl = req.file
             newEditedPost.save(function(err) {
                 if (err) throw err;
-                console.log('Post updated successfully');
-                res.redirect('back')
+                // console.log('Post updated successfully');
+                Post.find({}, function(err, posts) {
+                  res.render('admin/all-posts', {posts: posts, session: req.session})
+                });
             });
-            console.log(newEditedPost)
+            // console.log(newEditedPost)
         }
     });
 })
@@ -250,7 +264,7 @@ adminRoutes.delete('/all-posts/:post_id', isAuthenticated, function (req, res) {
                   if(imagePath){
                     fs.unlink(imagePath)
                   }
-                  res.redirect('back');
+                  res.redirect('/admin/all-posts');
                 }
             });
         }
@@ -259,7 +273,11 @@ adminRoutes.delete('/all-posts/:post_id', isAuthenticated, function (req, res) {
 
 // create admin
 adminRoutes.get('/add-admin', isAuthenticated, function (req, res) { 
-  res.render('admin/add-admin', {session: req.session})
+  if(req.session.role == false){
+    res.json({message: 'Your are NOT allowed here!'})
+  }else{
+    res.render('admin/add-admin', {session: req.session})
+  }
 })
 adminRoutes.post('/add-admin', isAuthenticated, upload.single('newAvatar'), function (req, res) { 
   var newHashedPassword = passwordHash.generate(req.body.newPassword)
@@ -278,14 +296,20 @@ adminRoutes.post('/add-admin', isAuthenticated, upload.single('newAvatar'), func
     newUser.save(function(err) {
         if (err) throw err;
         console.log('User saved successfully');
-        res.redirect('back')
+        User.find({}, function(err, users) {
+          res.render('admin/all-admins', {users: users, session: req.session})
+        });
     });
     
 })
-adminRoutes.get('/all-admins', function (req, res) {
-  User.find({}, function(err, users) {
-    res.render('admin/all-admins', {users: users, session: req.session})
-  });
+adminRoutes.get('/all-admins', isAuthenticated, function (req, res) {
+  if(req.session.role == false){
+    res.json({message: 'Your are NOT allowed here!'})
+  }else{
+    User.find({}, function(err, users) {
+      res.render('admin/all-admins', {users: users, session: req.session})
+    });
+  }
 })
 adminRoutes.delete('/all-admins/:admin_id', isAuthenticated, function (req, res) {
   var imagePath;
@@ -321,7 +345,71 @@ adminRoutes.delete('/all-admins/:admin_id', isAuthenticated, function (req, res)
     });
 })
 
+adminRoutes.get('/profile', isAuthenticated, function (req, res) { 
+  User.findById(req.session.userId)
+    .exec(function(err, user) {
+        if (err || !user) {
+            res.statusCode = 404;
+            res.send({message: '404'});
+        } else {
+          res.render('admin/profile', {user: user, session: req.session})
+        }
+    });
+})
+adminRoutes.get('/edit-profile', isAuthenticated, function (req, res) { 
+  User.findById(req.session.userId)
+    .exec(function(err, user) {
+        if (err || !user) {
+            res.statusCode = 404;
+            res.send({message: '404'});
+        } else {
+          res.render('admin/edit-profile', {user: user, session: req.session})
+        }
+    });
+})
 
+adminRoutes.put('/edit-profile', upload.single('editAvatar'), isAuthenticated, function (req, res) { 
+  var userId = req.query.userId
+  User.findById(userId)
+    .exec(function(err, newEditedUser) {
+        if (err || !newEditedUser) {
+            res.statusCode = 404;
+            res.send({message: '404'});
+        } else {
+            newEditedUser.name = req.body.editUsername
+            newEditedUser.email = req.body.editEmail
+            newEditedUser.password = passwordHash.generate(req.body.editPassword)
+            fs.unlink(newEditedUser.avatarUrl.path)
+            newEditedUser.avatarUrl = req.file
+
+            console.log(newEditedUser)
+
+            newEditedUser.save(function(err) {
+                if (err) throw err;
+                req.session = null;
+                res.redirect('/admin')
+            });
+        }
+    });
+});
+
+
+// General
+adminRoutes.get('/general', isAuthenticated, function (req, res) { 
+  res.render('admin/general', {session: req.session})
+})
+
+
+// About
+adminRoutes.get('/about', isAuthenticated, function (req, res) { 
+  res.render('admin/about', {session: req.session})
+})
+
+
+// Contact
+adminRoutes.get('/contact', isAuthenticated, function (req, res) { 
+  res.render('admin/contact', {session: req.session})
+})
 
 // logout
 adminRoutes.get('/logout', function (req, res) { 

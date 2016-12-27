@@ -43,7 +43,7 @@
 				<h3><%= session.name %></h3>
 				<%
 				var whatRole;
-				if(session.name) {
+				if(session.role) {
 					whatRole = 'Admin'
 				}else {whatRole = 'Writer'} %>
 				<p><%= whatRole %></p>
@@ -68,6 +68,25 @@
 					</li>
 				</ul>
 			</li>
+			<% if(session.role){ %>
+			<li class=""><a href="/admin/general"><span class="glyphicon glyphicon-dashboard"></span> General</a></li>
+			<li class="parent">
+				<a href="#">
+					<span class="glyphicon glyphicon-lock"></span> Pages <span data-toggle="collapse" href="#sub-item-1" class="icon pull-right"><em class="glyphicon glyphicon-s glyphicon-plus"></em></span> 
+				</a>
+				<ul class="children collapse" id="sub-item-1">
+					<li>
+						<a href="about">
+							<span class="glyphicon glyphicon-list"></span> About
+						</a>
+					</li>
+					<li>
+						<a href="contact">
+							<span class="glyphicon glyphicon-plus"></span> Contact
+						</a>
+					</li>
+				</ul>
+			</li>
 			<li class="parent">
 				<a href="#">
 					<span class="glyphicon glyphicon-lock"></span> Admins <span data-toggle="collapse" href="#sub-item-1" class="icon pull-right"><em class="glyphicon glyphicon-s glyphicon-plus"></em></span> 
@@ -85,6 +104,9 @@
 					</li>
 				</ul>
 			</li>
+			<% } %>
+
+			<li class=""><a href="/admin/profile"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
 			<li role="presentation" class="divider"></li>
 			<li><a href="logout"><span class="glyphicon glyphicon-user"></span> Logout</a></li>
 		</ul>

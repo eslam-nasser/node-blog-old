@@ -5,13 +5,13 @@
 		<div class="row">
 			<ol class="breadcrumb">
 				<li><a href="#"><span class="glyphicon glyphicon-home"></span></a></li>
-				<li class="active">Tables</li>
+				<li class="active">All Posts</li>
 			</ol>
 		</div><!--/.row-->
 		
 		<div class="row">
 			<div class="col-lg-12">
-				<h1 class="page-header">Tables</h1>
+				<h1 class="page-header">All Posts</h1>
 			</div>
 		</div><!--/.row-->
 				
@@ -19,7 +19,7 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="panel panel-default">
-					<div class="panel-heading">Advanced Table</div>
+					<div class="panel-heading">Posts</div>
 					<div class="panel-body">
 						<table id="users-table" data-toggle="table" data-show-refresh="false" data-show-toggle="false" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
 						    <thead>
@@ -70,7 +70,7 @@
         Are you sure you want to <b>DELETE</b> this post
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 		<form action="all-posts/<%= posts[i]._id %>?_method=DELETE" method="POST" style="display: inline">
 			<input type="hidden" value="<%= posts[i]._id %>" name="deleteThisPostId">
 			<button type="submit" class="btn btn-danger">Delete</button>
